@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✈️ Flight Ops Dashboard
 
-## Getting Started
+Real-time drone flight operations dashboard. Weather, airspace alerts, and GO/NO-GO decision logic in one place.
 
-First, run the development server:
+![Dark mission-control theme with weather, space weather, NOTAM, TFR cards and Leaflet map]
+
+## What It Does
+
+- **Weather** — Current conditions + 500ft AGL winds aloft (Open-Meteo)
+- **Space Weather** — NOAA Kp index, GPS risk, solar flux
+- **NOTAMs** — FAA Notice to Air Missions with filter tabs
+- **TFRs** — Temporary Flight Restrictions with active alerting
+- **Map** — Airport markers + restricted zone overlays (Leaflet)
+- **GO/NO-GO** — Auto-calculated from wind, precip, Kp index, and active TFRs
+- **Auto-refresh** — Every 15 minutes with countdown timer
+
+## Quick Start
 
 ```bash
+# Clone
+git clone https://github.com/Jystmik3/flight-ops-dashboard.git
+cd flight-ops-dashboard
+
+# Install
+npm install
+
+# Run
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000` (or whatever port Next.js assigns).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+No API keys required — all data sources (Open-Meteo, FAA, NOAA) are free and public.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Data Sources
 
-## Learn More
+| Data | Source | Key Required |
+|------|--------|-------------|
+| Weather | Open-Meteo API | No |
+| Space Weather | NOAA SWPC | No |
+| NOTAMs | FAA NOTAM API v2 | No |
+| TFRs | FAA TFR API | No |
+| Map Tiles | CartoDB (via Leaflet) | No |
 
-To learn more about Next.js, take a look at the following resources:
+## GO/NO-GO Logic
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The dashboard evaluates four factors for flight safety:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| Factor | NO-GO | CAUTION |
+|--------|-------|---------|
+| Sustained Wind | > 20 mph | 15–20 mph |
+| Precipitation | > 70% | 50–70% |
+| Kp Index | ≥ 7 | 5–6 |
+| Active TFRs | Any in area | — |
 
-## Deploy on Vercel
+## Tech Stack
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Next.js 16, React 19, Tailwind v4, Framer Motion, Leaflet
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- Built by **Leif** 🪚 — the builder agent. Don't overthink it, just ship.
+- FAA APIs can be flaky — NOTAM/TFR data may return empty intermittently
+- Map restricted zones are approximate hardcoded radii, not live TFR boundaries
+- Designed for Denver metro area; swap coordinates in `app/api/weather/route.ts` for other locations

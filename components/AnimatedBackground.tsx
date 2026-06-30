@@ -21,6 +21,8 @@ export default function AnimatedBackground() {
       initParticles();
     };
 
+    const activeCanvas = canvas;
+
     class Particle {
       x: number;
       y: number;
@@ -32,8 +34,8 @@ export default function AnimatedBackground() {
       pulseSpeed: number;
 
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * activeCanvas.width;
+        this.y = Math.random() * activeCanvas.height;
         this.vx = (Math.random() - 0.5) * 0.3;
         this.vy = (Math.random() - 0.5) * 0.3;
         this.size = Math.random() * 2 + 1;
@@ -47,10 +49,10 @@ export default function AnimatedBackground() {
         this.y += this.vy;
         this.pulse += this.pulseSpeed;
 
-        if (this.x < 0) this.x = canvas.width;
-        if (this.x > canvas.width) this.x = 0;
-        if (this.y < 0) this.y = canvas.height;
-        if (this.y > canvas.height) this.y = 0;
+        if (this.x < 0) this.x = activeCanvas.width;
+        if (this.x > activeCanvas.width) this.x = 0;
+        if (this.y < 0) this.y = activeCanvas.height;
+        if (this.y > activeCanvas.height) this.y = 0;
       }
 
       draw() {
@@ -65,7 +67,7 @@ export default function AnimatedBackground() {
 
     const initParticles = () => {
       particles = [];
-      const particleCount = Math.floor((canvas.width * canvas.height) / 15000);
+      const particleCount = Math.floor((activeCanvas.width * activeCanvas.height) / 15000);
       for (let i = 0; i < particleCount; i++) {
         particles.push(new Particle());
       }
@@ -75,12 +77,12 @@ export default function AnimatedBackground() {
       if (!ctx) return;
 
       // Deep space background gradient
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      const gradient = ctx.createLinearGradient(0, 0, 0, activeCanvas.height);
       gradient.addColorStop(0, '#0a0a0f');
       gradient.addColorStop(0.5, '#0f0f1a');
       gradient.addColorStop(1, '#0a0a0f');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, activeCanvas.width, activeCanvas.height);
 
       // Animated grid lines
       const gridSize = 50;
@@ -91,29 +93,29 @@ export default function AnimatedBackground() {
       ctx.lineWidth = 1;
 
       // Vertical lines
-      for (let x = 0; x < canvas.width; x += gridSize) {
+      for (let x = 0; x < activeCanvas.width; x += gridSize) {
         ctx.beginPath();
         ctx.moveTo(x, 0);
-        ctx.lineTo(x, canvas.height);
+        ctx.lineTo(x, activeCanvas.height);
         ctx.stroke();
       }
 
       // Horizontal lines with scan effect
-      for (let y = offset - gridSize; y < canvas.height; y += gridSize) {
+      for (let y = offset - gridSize; y < activeCanvas.height; y += gridSize) {
         ctx.beginPath();
         ctx.moveTo(0, y);
-        ctx.lineTo(canvas.width, y);
+        ctx.lineTo(activeCanvas.width, y);
         ctx.stroke();
       }
 
       // Scan line
-      const scanY = (Date.now() * 0.05) % canvas.height;
+      const scanY = (Date.now() * 0.05) % activeCanvas.height;
       const scanGradient = ctx.createLinearGradient(0, scanY - 50, 0, scanY + 50);
       scanGradient.addColorStop(0, 'rgba(6, 182, 212, 0)');
       scanGradient.addColorStop(0.5, 'rgba(6, 182, 212, 0.1)');
       scanGradient.addColorStop(1, 'rgba(6, 182, 212, 0)');
       ctx.fillStyle = scanGradient;
-      ctx.fillRect(0, scanY - 50, canvas.width, 100);
+      ctx.fillRect(0, scanY - 50, activeCanvas.width, 100);
     };
 
     const animate = () => {

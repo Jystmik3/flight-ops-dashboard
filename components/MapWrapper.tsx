@@ -3,7 +3,7 @@
 import { MapContainer, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 
-const DENVER_CENTER = [39.7392, -104.9903] as const;
+const DENVER_CENTER: [number, number] = [39.7392, -104.9903];
 
 const AIRPORTS = [
   { code: 'DEN', name: 'Denver International', lat: 39.8561, lng: -104.6737 },
@@ -18,18 +18,7 @@ const NO_FLY_ZONES = [
   { name: 'Buckley SFB', lat: 39.7017, lng: -104.7517, radius: 4000 },
 ];
 
-interface MapWrapperProps {
-  tfrData: {
-    tfrs: Array<{
-      id: string;
-      title: string;
-      text: string;
-    }>;
-    activeInArea: boolean;
-  } | null;
-}
-
-export default function MapWrapper({ tfrData }: MapWrapperProps) {
+export default function MapWrapper() {
   return (
     <div className="rounded-lg overflow-hidden border border-cyan-500/30" style={{ height: '350px' }}>
       <MapContainer

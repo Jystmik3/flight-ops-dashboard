@@ -100,11 +100,13 @@ export default function Dashboard() {
   }, []);
 
   useEffect(() => {
-    fetchData();
-
     // Auto-refresh every 15 minutes (900000 ms)
+    const timeout = setTimeout(() => fetchData(), 0);
     const interval = setInterval(fetchData, 900000);
-    return () => clearInterval(interval);
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [fetchData]);
 
   // Calculate GO/NO-GO status

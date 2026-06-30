@@ -3,24 +3,6 @@
 import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 
-// Denver coordinates
-const DENVER_CENTER = [39.7392, -104.9903] as const;
-
-// Denver area airports
-const AIRPORTS = [
-  { code: 'DEN', name: 'Denver International', lat: 39.8561, lng: -104.6737 },
-  { code: 'APA', name: 'Centennial Airport', lat: 39.5701, lng: -104.8492 },
-  { code: 'BJC', name: 'Rocky Mountain Metro', lat: 39.9088, lng: -105.1169 },
-  { code: 'FTG', name: 'Front Range', lat: 39.7853, lng: -104.5436 },
-];
-
-// No-fly zones (approximate boundaries)
-const NO_FLY_ZONES = [
-  { name: 'Downtown Denver', lat: 39.7392, lng: -104.9903, radius: 2000 },
-  { name: 'DEN Airport', lat: 39.8561, lng: -104.6737, radius: 5000 },
-  { name: 'Buckley SFB', lat: 39.7017, lng: -104.7517, radius: 4000 },
-];
-
 interface MapCardProps {
   tfrData: {
     tfrs: Array<{
@@ -43,7 +25,7 @@ function MapSkeleton() {
 }
 
 export default function MapCard({ tfrData }: MapCardProps) {
-  const [MapComponent, setMapComponent] = useState<React.ComponentType<{ tfrData: MapCardProps['tfrData'] }> | null>(null);
+  const [MapComponent, setMapComponent] = useState<React.ComponentType | null>(null);
 
   useEffect(() => {
     import('./MapWrapper').then(m => {
@@ -74,7 +56,7 @@ export default function MapCard({ tfrData }: MapCardProps) {
       </div>
 
       {MapComponent ? (
-        <MapComponent tfrData={tfrData} />
+        <MapComponent />
       ) : (
         <MapSkeleton />
       )}

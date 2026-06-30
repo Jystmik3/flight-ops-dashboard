@@ -47,7 +47,7 @@ export default function WeatherCard({ data, loading }: WeatherCardProps) {
   };
 
   if (loading) {
-    return <CardSkeleton title="WEATHER" />;
+    return <CardSkeleton />;
   }
 
   const current = data?.current;
@@ -153,15 +153,13 @@ export default function WeatherCard({ data, loading }: WeatherCardProps) {
   );
 }
 
-function CardSkeleton({ title }: { title: string }) {
+function CardSkeleton() {
   return (
     <div className="rounded-xl border border-cyan-500/20 bg-black/30 p-5 animate-pulse">
-      <div className="h-4 w-24 bg-cyan-500/20 rounded mb-4" />
-      <div className="space-y-3">
-        <div className="h-8 bg-cyan-500/10 rounded" />
-        <div className="h-4 bg-cyan-500/10 rounded" />
-        <div className="h-4 bg-cyan-500/10 rounded" />
-      </div>
+      <div className="h-4 w-32 bg-cyan-500/20 rounded mb-4" />
+      <div className="h-8 bg-cyan-500/10 rounded mb-4" />
+      <div className="h-16 bg-cyan-500/10 rounded mb-3" />
+      <div className="h-4 bg-cyan-500/10 rounded" />
     </div>
   );
 }

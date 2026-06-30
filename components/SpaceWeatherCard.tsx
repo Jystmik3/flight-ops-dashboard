@@ -21,12 +21,6 @@ export default function SpaceWeatherCard({ data, loading }: SpaceWeatherCardProp
     return 'text-emerald-400';
   };
 
-  const getKpBg = (kp: number) => {
-    if (kp >= 7) return 'bg-red-400';
-    if (kp >= 5) return 'bg-amber-400';
-    return 'bg-emerald-400';
-  };
-
   const getGpsRiskColor = (risk: string) => {
     switch (risk) {
       case 'HIGH': return 'text-red-400 border-red-400/50 bg-red-400/10';
@@ -47,7 +41,7 @@ export default function SpaceWeatherCard({ data, loading }: SpaceWeatherCardProp
     );
   }
 
-  const { currentKp, predictedKp, maxKp24h, solarFlux, gpsRisk, gpsRiskReason } = data;
+  const { currentKp, maxKp24h, solarFlux, gpsRisk, gpsRiskReason } = data;
 
   // Kp scale visualization (0-9)
   const kpBlocks = Array.from({ length: 10 }, (_, i) => ({
